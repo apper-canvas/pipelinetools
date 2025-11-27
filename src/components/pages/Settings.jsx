@@ -1,13 +1,15 @@
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-import Button from '@/components/atoms/Button';
-import Input from '@/components/atoms/Input';
-import Card from '@/components/atoms/Card';
-import Badge from '@/components/atoms/Badge';
-import ApperIcon from '@/components/ApperIcon';
-import Loading from '@/components/ui/Loading';
-import { profileService } from '@/services/api/profileService';
-import { userService } from '@/services/api/userService';
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { create, getAll } from "@/services/api/companiesService";
+import userService from "@/services/api/userService";
+import profileService from "@/services/api/profileService";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import Card from "@/components/atoms/Card";
+import Badge from "@/components/atoms/Badge";
+import Company from "@/components/pages/Company";
 
 function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
@@ -309,14 +311,11 @@ function CompanyProfileTab() {
 }
 
 // User Management Tab Component
+// User Management Tab Component
 function UserManagementTab() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showInviteModal, setShowInviteModal] = useState(false);
-
-  useState(() => {
-    loadUsers();
-  }, []);
 
   const loadUsers = async () => {
     try {
@@ -328,6 +327,10 @@ function UserManagementTab() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
   const handleRemoveUser = async (userId) => {
     if (!confirm('Are you sure you want to remove this user?')) return;
