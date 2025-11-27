@@ -12,7 +12,41 @@
     "Description": "Complete website redesign including UX/UI improvements, mobile optimization, and CMS integration based on approved quote Q-2024-001.",
     "Notes": "Client requested additional mobile optimization features. Timeline adjusted accordingly.",
     "CreatedDate": "2024-02-01T10:00:00Z",
-    "UpdatedDate": "2024-02-05T14:30:00Z"
+    "UpdatedDate": "2024-02-05T14:30:00Z",
+    "products": [
+      {
+        "Product": "Website Design & Development",
+        "Quantity": 1,
+        "SalePrice": 8000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 8680
+      },
+      {
+        "Product": "Mobile Optimization",
+        "Quantity": 1,
+        "SalePrice": 3500,
+        "Discount": 5,
+        "Tax": 8.5,
+        "TotalAmount": 3598.75
+      },
+      {
+        "Product": "CMS Integration",
+        "Quantity": 1,
+        "SalePrice": 2500,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 2712.5
+      },
+      {
+        "Product": "Quality Assurance Testing",
+        "Quantity": 20,
+        "SalePrice": 50,
+        "Discount": 0,
+        "Tax": 0,
+        "TotalAmount": 1000
+      }
+    ]
   },
   {
     "Id": 2,
@@ -27,7 +61,33 @@
     "Description": "Full ERP system implementation including data migration, training, and 6-month support package. Based on accepted quote Q-2024-003.",
     "Notes": "Project kickoff scheduled for February 15th. Client team assigned.",
     "CreatedDate": "2024-02-02T09:30:00Z",
-    "UpdatedDate": "2024-02-02T16:45:00Z"
+    "UpdatedDate": "2024-02-02T16:45:00Z",
+    "products": [
+      {
+        "Product": "ERP Software License",
+        "Quantity": 1,
+        "SalePrice": 25000,
+        "Discount": 10,
+        "Tax": 8.5,
+        "TotalAmount": 24412.5
+      },
+      {
+        "Product": "Implementation Services",
+        "Quantity": 120,
+        "SalePrice": 150,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 19530
+      },
+      {
+        "Product": "Training Sessions",
+        "Quantity": 8,
+        "SalePrice": 200,
+        "Discount": 0,
+        "Tax": 0,
+        "TotalAmount": 1600
+      }
+    ]
   },
   {
     "Id": 3,
@@ -42,7 +102,41 @@
     "Description": "3-month digital marketing campaign including social media management, PPC advertising, and content creation for Q1 2024.",
     "Notes": "Campaign successfully completed. Client reported 40% increase in lead generation.",
     "CreatedDate": "2024-01-25T11:15:00Z",
-    "UpdatedDate": "2024-02-26T10:20:00Z"
+    "UpdatedDate": "2024-02-26T10:20:00Z",
+    "products": [
+      {
+        "Product": "Social Media Management",
+        "Quantity": 3,
+        "SalePrice": 1200,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 3906
+      },
+      {
+        "Product": "PPC Advertising Setup & Management",
+        "Quantity": 3,
+        "SalePrice": 800,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 2604
+      },
+      {
+        "Product": "Content Creation",
+        "Quantity": 12,
+        "SalePrice": 150,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 1953
+      },
+      {
+        "Product": "Analytics & Reporting",
+        "Quantity": 1,
+        "SalePrice": 400,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 434
+      }
+    ]
   },
   {
     "Id": 4,
@@ -57,7 +151,49 @@
     "Description": "Migration of on-premises infrastructure to AWS cloud including setup, configuration, and optimization services.",
     "Notes": "Phase 1 migration completed successfully. Phase 2 in progress.",
     "CreatedDate": "2024-02-03T14:20:00Z",
-    "UpdatedDate": "2024-02-20T09:15:00Z"
+    "UpdatedDate": "2024-02-20T09:15:00Z",
+    "products": [
+      {
+        "Product": "AWS Setup & Configuration",
+        "Quantity": 1,
+        "SalePrice": 5000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 5425
+      },
+      {
+        "Product": "Data Migration Services",
+        "Quantity": 80,
+        "SalePrice": 120,
+        "Discount": 5,
+        "Tax": 8.5,
+        "TotalAmount": 9879
+      },
+      {
+        "Product": "Security Configuration",
+        "Quantity": 1,
+        "SalePrice": 3000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 3255
+      },
+      {
+        "Product": "Performance Optimization",
+        "Quantity": 1,
+        "SalePrice": 2500,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 2712.5
+      },
+      {
+        "Product": "Documentation & Training",
+        "Quantity": 1,
+        "SalePrice": 1200,
+        "Discount": 10,
+        "Tax": 0,
+        "TotalAmount": 1080
+      }
+    ]
   },
   {
     "Id": 5,
@@ -72,7 +208,41 @@
     "Description": "Custom data analytics platform development with real-time dashboards and reporting capabilities for business intelligence.",
     "Notes": "Requirements gathering phase completed. Development started on February 12th.",
     "CreatedDate": "2024-02-05T16:45:00Z",
-    "UpdatedDate": "2024-02-12T13:30:00Z"
+    "UpdatedDate": "2024-02-12T13:30:00Z",
+    "products": [
+      {
+        "Product": "Platform Architecture & Design",
+        "Quantity": 1,
+        "SalePrice": 6000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 6510
+      },
+      {
+        "Product": "Backend Development",
+        "Quantity": 100,
+        "SalePrice": 120,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 13020
+      },
+      {
+        "Product": "Dashboard Development",
+        "Quantity": 60,
+        "SalePrice": 100,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 6510
+      },
+      {
+        "Product": "API Integration",
+        "Quantity": 1,
+        "SalePrice": 2000,
+        "Discount": 0,
+        "Tax": 0,
+        "TotalAmount": 2000
+      }
+    ]
   },
   {
     "Id": 6,
@@ -87,7 +257,33 @@
     "Description": "iOS and Android mobile application development with backend API integration and admin dashboard for customer management.",
     "Notes": "Contract pending final approval. Technical specifications under review.",
     "CreatedDate": "2024-02-08T10:00:00Z",
-    "UpdatedDate": "2024-02-08T10:00:00Z"
+    "UpdatedDate": "2024-02-08T10:00:00Z",
+    "products": [
+      {
+        "Product": "iOS App Development",
+        "Quantity": 1,
+        "SalePrice": 15000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 16275
+      },
+      {
+        "Product": "Android App Development",
+        "Quantity": 1,
+        "SalePrice": 12000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 13020
+      },
+      {
+        "Product": "Backend API Development",
+        "Quantity": 1,
+        "SalePrice": 4000,
+        "Discount": 10,
+        "Tax": 0,
+        "TotalAmount": 3600
+      }
+    ]
   },
   {
     "Id": 7,
@@ -102,7 +298,33 @@
     "Description": "Comprehensive cybersecurity audit including vulnerability assessment, penetration testing, and compliance report with recommendations.",
     "Notes": "Assessment scheduled for February 20-24. Security team briefed.",
     "CreatedDate": "2024-02-10T09:30:00Z",
-    "UpdatedDate": "2024-02-15T14:45:00Z"
+    "UpdatedDate": "2024-02-15T14:45:00Z",
+    "products": [
+      {
+        "Product": "Vulnerability Assessment",
+        "Quantity": 1,
+        "SalePrice": 3000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 3255
+      },
+      {
+        "Product": "Penetration Testing",
+        "Quantity": 1,
+        "SalePrice": 3500,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 3797.5
+      },
+      {
+        "Product": "Security Report & Recommendations",
+        "Quantity": 1,
+        "SalePrice": 1000,
+        "Discount": 0,
+        "Tax": 0,
+        "TotalAmount": 1000
+      }
+    ]
   },
   {
     "Id": 8,
@@ -117,7 +339,25 @@
     "Description": "Six-session training workshop series on digital transformation best practices for management team and key stakeholders.",
     "Notes": "All 6 sessions completed successfully. Excellent feedback from participants.",
     "CreatedDate": "2024-01-30T15:20:00Z",
-    "UpdatedDate": "2024-02-16T11:30:00Z"
+    "UpdatedDate": "2024-02-16T11:30:00Z",
+    "products": [
+      {
+        "Product": "Digital Transformation Workshop",
+        "Quantity": 6,
+        "SalePrice": 600,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 3906
+      },
+      {
+        "Product": "Workshop Materials",
+        "Quantity": 12,
+        "SalePrice": 25,
+        "Discount": 0,
+        "Tax": 0,
+        "TotalAmount": 300
+      }
+    ]
   },
   {
     "Id": 9,
@@ -132,7 +372,41 @@
     "Description": "Integration of existing inventory management system with new e-commerce platform including payment gateway setup and shipping integration.",
     "Notes": "Payment gateway integration completed. Working on shipping module.",
     "CreatedDate": "2024-02-12T13:15:00Z",
-    "UpdatedDate": "2024-02-25T16:20:00Z"
+    "UpdatedDate": "2024-02-25T16:20:00Z",
+    "products": [
+      {
+        "Product": "E-commerce Platform Setup",
+        "Quantity": 1,
+        "SalePrice": 8000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 8680
+      },
+      {
+        "Product": "Inventory System Integration",
+        "Quantity": 1,
+        "SalePrice": 5000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 5425
+      },
+      {
+        "Product": "Payment Gateway Setup",
+        "Quantity": 1,
+        "SalePrice": 2500,
+        "Discount": 5,
+        "Tax": 8.5,
+        "TotalAmount": 2581.25
+      },
+      {
+        "Product": "Shipping Integration",
+        "Quantity": 1,
+        "SalePrice": 2000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 2170
+      }
+    ]
   },
   {
     "Id": 10,
@@ -147,7 +421,41 @@
     "Description": "Database performance optimization including query optimization, indexing strategy, and infrastructure scaling for improved response times.",
     "Notes": "Performance baseline established. Optimization plan approved by client IT team.",
     "CreatedDate": "2024-02-14T11:45:00Z",
-    "UpdatedDate": "2024-02-18T09:10:00Z"
+    "UpdatedDate": "2024-02-18T09:10:00Z",
+    "products": [
+      {
+        "Product": "Database Performance Analysis",
+        "Quantity": 1,
+        "SalePrice": 2500,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 2712.5
+      },
+      {
+        "Product": "Query Optimization",
+        "Quantity": 40,
+        "SalePrice": 120,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 5208
+      },
+      {
+        "Product": "Index Strategy Implementation",
+        "Quantity": 1,
+        "SalePrice": 3000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 3255
+      },
+      {
+        "Product": "Performance Testing",
+        "Quantity": 1,
+        "SalePrice": 1500,
+        "Discount": 15,
+        "Tax": 0,
+        "TotalAmount": 1275
+      }
+    ]
   },
   {
     "Id": 11,
@@ -162,7 +470,33 @@
     "Description": "Third-party API integration for CRM and accounting systems to automate data synchronization and reporting workflows.",
     "Notes": "Project cancelled due to client budget constraints. Partial work compensation processed.",
     "CreatedDate": "2024-01-28T14:30:00Z",
-    "UpdatedDate": "2024-02-05T10:15:00Z"
+    "UpdatedDate": "2024-02-05T10:15:00Z",
+    "products": [
+      {
+        "Product": "CRM API Integration",
+        "Quantity": 1,
+        "SalePrice": 4000,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 4340
+      },
+      {
+        "Product": "Accounting System Integration",
+        "Quantity": 1,
+        "SalePrice": 3500,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 3797.5
+      },
+      {
+        "Product": "Data Synchronization Setup",
+        "Quantity": 1,
+        "SalePrice": 2000,
+        "Discount": 10,
+        "Tax": 0,
+        "TotalAmount": 1800
+      }
+    ]
   },
   {
     "Id": 12,
@@ -177,6 +511,40 @@
     "Description": "CMS platform upgrade to latest version including security patches, new features implementation, and staff training on updated interface.",
     "Notes": "Upgrade deployed to staging environment. User acceptance testing in progress.",
     "CreatedDate": "2024-02-16T10:20:00Z",
-    "UpdatedDate": "2024-02-28T15:40:00Z"
+    "UpdatedDate": "2024-02-28T15:40:00Z",
+    "products": [
+      {
+        "Product": "CMS Platform Upgrade",
+        "Quantity": 1,
+        "SalePrice": 3500,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 3797.5
+      },
+      {
+        "Product": "Security Patches Implementation",
+        "Quantity": 1,
+        "SalePrice": 1500,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 1627.5
+      },
+      {
+        "Product": "Staff Training Sessions",
+        "Quantity": 3,
+        "SalePrice": 300,
+        "Discount": 0,
+        "Tax": 8.5,
+        "TotalAmount": 976.5
+      },
+      {
+        "Product": "Testing & Quality Assurance",
+        "Quantity": 1,
+        "SalePrice": 500,
+        "Discount": 50,
+        "Tax": 0,
+        "TotalAmount": 250
+      }
+    ]
   }
 ]

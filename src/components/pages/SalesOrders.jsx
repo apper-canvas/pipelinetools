@@ -467,16 +467,29 @@ function OrderModal({ order, contacts, companies, quotes, onSave, onClose }) {
     OrderDate: '',
     DeliveryDate: '',
     Description: '',
-    Notes: ''
+    Notes: '',
+    products: []
   });
+
+  const [productForm, setProductForm] = useState({
+    Product: '',
+    Quantity: 1,
+    SalePrice: '',
+    Discount: 0,
+    Tax: 0,
+    TotalAmount: 0
+  });
+
+  const [editingProductIndex, setEditingProductIndex] = useState(-1);
+  const [showProductForm, setShowProductForm] = useState(false);
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const statuses = ['Draft', 'Confirmed', 'In Progress', 'Shipped', 'Delivered', 'Cancelled'];
 
-  useEffect(() => {
-if (order) {
+useEffect(() => {
+    if (order) {
       setFormData({
         OrderNumber: order.OrderNumber || '',
         Title: order.Title || '',
@@ -488,7 +501,8 @@ if (order) {
         OrderDate: order.OrderDate ? format(new Date(order.OrderDate), 'yyyy-MM-dd') : '',
         DeliveryDate: order.DeliveryDate ? format(new Date(order.DeliveryDate), 'yyyy-MM-dd') : '',
         Description: order.Description || '',
-        Notes: order.Notes || ''
+        Notes: order.Notes || '',
+        products: order.products || []
       });
     } else {
       // Generate order number for new orders
@@ -503,7 +517,35 @@ if (order) {
     }
   }, [order]);
 
-  function handleInputChange(e) {
+  // Calculate product total amount when form changes
+  useEffect(() => {
+    const quantity = parseFloat(productForm.Quantity) || 0;
+    const salePrice = parseFloat(productForm.SalePrice) || 0;
+    const discount = parseFloat(productForm.Discount) || 0;
+    const tax = parseFloat(productForm.Tax) || 0;
+
+    const subtotal = quantity * salePrice;
+    const discountAmount = subtotal * (discount / 100);
+    const taxableAmount = subtotal - discountAmount;
+    const taxAmount = taxableAmount * (tax / 100);
+    const total = taxableAmount + taxAmount;
+
+    setProductForm(prev => ({
+      ...prev,
+      TotalAmount: total
+    }));
+  }, [productForm.Quantity, productForm.SalePrice, productForm.Discount, productForm.Tax]);
+
+  // Calculate order total from products
+  useEffect(() => {
+    const total = formData.products.reduce((sum, product) => sum + (product.TotalAmount || 0), 0);
+    setFormData(prev => ({
+      ...prev,
+      TotalAmount: total.toString()
+    }));
+  }, [formData.products]);
+
+function handleInputChange(e) {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -530,7 +572,107 @@ if (order) {
     }
   }
 
-  function validateForm() {
+  function handleProductInputChange(e) {
+    const { name, value } = e.target;
+    setProductForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  }
+
+  function addProduct() {
+    if (!productForm.Product.trim() || !productForm.SalePrice) {
+      return;
+    }
+
+    const newProduct = {
+      Product: productForm.Product,
+      Quantity: parseFloat(productForm.Quantity) || 1,
+      SalePrice: parseFloat(productForm.SalePrice) || 0,
+      Discount: parseFloat(productForm.Discount) || 0,
+      Tax: parseFloat(productForm.Tax) || 0,
+      TotalAmount: productForm.TotalAmount
+    };
+
+    setFormData(prev => ({
+      ...prev,
+      products: [...prev.products, newProduct]
+    }));
+
+    // Reset product form
+    setProductForm({
+      Product: '',
+      Quantity: 1,
+      SalePrice: '',
+      Discount: 0,
+      Tax: 0,
+      TotalAmount: 0
+    });
+    setShowProductForm(false);
+  }
+
+  function editProduct(index) {
+    const product = formData.products[index];
+    setProductForm(product);
+    setEditingProductIndex(index);
+    setShowProductForm(true);
+  }
+
+  function updateProduct() {
+    if (!productForm.Product.trim() || !productForm.SalePrice) {
+      return;
+    }
+
+    const updatedProduct = {
+      Product: productForm.Product,
+      Quantity: parseFloat(productForm.Quantity) || 1,
+      SalePrice: parseFloat(productForm.SalePrice) || 0,
+      Discount: parseFloat(productForm.Discount) || 0,
+      Tax: parseFloat(productForm.Tax) || 0,
+      TotalAmount: productForm.TotalAmount
+    };
+
+    setFormData(prev => ({
+      ...prev,
+      products: prev.products.map((product, index) => 
+        index === editingProductIndex ? updatedProduct : product
+      )
+    }));
+
+    // Reset form
+    setProductForm({
+      Product: '',
+      Quantity: 1,
+      SalePrice: '',
+      Discount: 0,
+      Tax: 0,
+      TotalAmount: 0
+    });
+    setEditingProductIndex(-1);
+    setShowProductForm(false);
+  }
+
+  function removeProduct(index) {
+    setFormData(prev => ({
+      ...prev,
+      products: prev.products.filter((_, i) => i !== index)
+    }));
+  }
+
+  function cancelProductEdit() {
+    setProductForm({
+      Product: '',
+      Quantity: 1,
+      SalePrice: '',
+      Discount: 0,
+      Tax: 0,
+      TotalAmount: 0
+    });
+    setEditingProductIndex(-1);
+    setShowProductForm(false);
+  }
+
+function validateForm() {
     const newErrors = {};
 
     if (!formData.Title.trim()) {
@@ -545,10 +687,6 @@ if (order) {
       newErrors.CompanyId = 'Company is required';
     }
 
-    if (!formData.TotalAmount || isNaN(parseFloat(formData.TotalAmount)) || parseFloat(formData.TotalAmount) <= 0) {
-      newErrors.TotalAmount = 'Valid amount is required';
-    }
-
     if (!formData.OrderDate) {
       newErrors.OrderDate = 'Order date is required';
     }
@@ -557,11 +695,16 @@ if (order) {
       newErrors.Description = 'Description is required';
     }
 
+    // Products are optional, but if provided, validate structure
+    if (formData.products.length === 0) {
+      newErrors.products = 'At least one product is required';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
 
-  async function handleSubmit(e) {
+async function handleSubmit(e) {
     e.preventDefault();
     
     if (!validateForm()) return;
@@ -570,12 +713,13 @@ if (order) {
     try {
       const submitData = {
         ...formData,
-ContactId: parseInt(formData.ContactId),
+        ContactId: parseInt(formData.ContactId),
         CompanyId: parseInt(formData.CompanyId),
         QuoteId: formData.QuoteId ? parseInt(formData.QuoteId) : null,
         TotalAmount: parseFloat(formData.TotalAmount),
         OrderDate: new Date(formData.OrderDate).toISOString(),
-        DeliveryDate: formData.DeliveryDate ? new Date(formData.DeliveryDate).toISOString() : null
+        DeliveryDate: formData.DeliveryDate ? new Date(formData.DeliveryDate).toISOString() : null,
+        products: formData.products
       };
 
       await onSave(submitData);
@@ -737,12 +881,226 @@ const contactOptions = contacts.map(contact => ({
                 </option>
               ))}
             </Select>
+{/* Products Section */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Products</h3>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setShowProductForm(true)}
+                className="flex items-center gap-2"
+              >
+                <ApperIcon name="Plus" size={16} />
+                Add Product
+              </Button>
+            </div>
+
+            {formData.products.length > 0 && (
+              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-3 text-left font-medium text-gray-700">Product</th>
+                        <th className="px-4 py-3 text-left font-medium text-gray-700">Qty</th>
+                        <th className="px-4 py-3 text-left font-medium text-gray-700">Price</th>
+                        <th className="px-4 py-3 text-left font-medium text-gray-700">Discount</th>
+                        <th className="px-4 py-3 text-left font-medium text-gray-700">Tax</th>
+                        <th className="px-4 py-3 text-right font-medium text-gray-700">Total</th>
+                        <th className="px-4 py-3 text-center font-medium text-gray-700">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {formData.products.map((product, index) => (
+                        <tr key={index}>
+                          <td className="px-4 py-3 font-medium text-gray-900">{product.Product}</td>
+                          <td className="px-4 py-3 text-gray-600">{product.Quantity}</td>
+                          <td className="px-4 py-3 text-gray-600">${product.SalePrice.toFixed(2)}</td>
+                          <td className="px-4 py-3 text-gray-600">{product.Discount}%</td>
+                          <td className="px-4 py-3 text-gray-600">{product.Tax}%</td>
+                          <td className="px-4 py-3 text-right font-medium text-gray-900">
+                            ${product.TotalAmount.toFixed(2)}
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center justify-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => editProduct(index)}
+                                className="text-blue-600 hover:text-blue-700"
+                              >
+                                <ApperIcon name="Edit2" size={16} />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => removeProduct(index)}
+                                className="text-red-600 hover:text-red-700"
+                              >
+                                <ApperIcon name="Trash2" size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {formData.products.length === 0 && (
+              <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
+                <ApperIcon name="Package" size={48} className="mx-auto text-gray-400 mb-4" />
+                <p className="text-gray-500 mb-4">No products added yet</p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowProductForm(true)}
+                  className="flex items-center gap-2 mx-auto"
+                >
+                  <ApperIcon name="Plus" size={16} />
+                  Add Your First Product
+                </Button>
+              </div>
+            )}
+
+            {errors.products && (
+              <p className="text-sm text-red-600">{errors.products}</p>
+            )}
+
+            {/* Product Form Modal */}
+            {showProductForm && (
+              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-medium text-gray-900">
+                    {editingProductIndex >= 0 ? 'Edit Product' : 'Add Product'}
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={cancelProductEdit}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <ApperIcon name="X" size={20} />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Product Name *
+                    </label>
+                    <Input
+                      name="Product"
+                      value={productForm.Product}
+                      onChange={handleProductInputChange}
+                      placeholder="Enter product name"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Quantity *
+                    </label>
+                    <Input
+                      name="Quantity"
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={productForm.Quantity}
+                      onChange={handleProductInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Sale Price ($) *
+                    </label>
+                    <Input
+                      name="SalePrice"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={productForm.SalePrice}
+                      onChange={handleProductInputChange}
+                      placeholder="0.00"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Discount (%)
+                    </label>
+                    <Input
+                      name="Discount"
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="0.1"
+                      value={productForm.Discount}
+                      onChange={handleProductInputChange}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tax (%)
+                    </label>
+                    <Input
+                      name="Tax"
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="0.1"
+                      value={productForm.Tax}
+                      onChange={handleProductInputChange}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Total Amount
+                    </label>
+                    <Input
+                      value={`$${productForm.TotalAmount.toFixed(2)}`}
+                      disabled
+                      className="bg-gray-100"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={cancelProductEdit}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={editingProductIndex >= 0 ? updateProduct : addProduct}
+                    disabled={!productForm.Product.trim() || !productForm.SalePrice}
+                    className="flex items-center gap-2"
+                  >
+                    <ApperIcon name={editingProductIndex >= 0 ? "Check" : "Plus"} size={16} />
+                    {editingProductIndex >= 0 ? 'Update Product' : 'Add Product'}
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Total Amount */}
+            {/* Total Amount - Now calculated automatically */}
             <div>
               <label htmlFor="TotalAmount" className="block text-sm font-medium text-gray-700 mb-2">
-                Total Amount ($) *
+                Total Amount ($)
               </label>
               <Input
                 id="TotalAmount"
@@ -751,11 +1109,12 @@ const contactOptions = contacts.map(contact => ({
                 min="0"
                 step="0.01"
                 value={formData.TotalAmount}
-                onChange={handleInputChange}
                 placeholder="0.00"
-                error={errors.TotalAmount}
-                required
+                disabled
+                className="bg-gray-100"
               />
+              <p className="text-xs text-gray-500 mt-1">Automatically calculated from products</p>
+            </div>
             </div>
 
             {/* Order Date */}

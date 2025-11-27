@@ -30,10 +30,24 @@ class SalesOrdersService {
 async create(orderData) {
     await delay();
     
+    // Calculate total amount from products if provided
+    let calculatedTotal = 0;
+    if (orderData.products && orderData.products.length > 0) {
+      calculatedTotal = orderData.products.reduce((sum, product) => {
+        const subtotal = product.Quantity * product.SalePrice;
+        const discountAmount = subtotal * (product.Discount / 100);
+        const taxableAmount = subtotal - discountAmount;
+        const taxAmount = taxableAmount * (product.Tax / 100);
+        return sum + (taxableAmount + taxAmount);
+      }, 0);
+    }
+    
     const newOrder = {
       ...orderData,
       Id: nextId++,
       QuoteId: orderData.QuoteId || null,
+      TotalAmount: orderData.products && orderData.products.length > 0 ? calculatedTotal : (orderData.TotalAmount || 0),
+      products: orderData.products || [],
       CreatedDate: new Date().toISOString(),
       UpdatedDate: new Date().toISOString()
     };
@@ -46,16 +60,30 @@ async create(orderData) {
   async update(id, updateData) {
     await delay();
     
-    const index = salesOrders.findIndex(order => order.Id === parseInt(id));
+const index = salesOrders.findIndex(order => order.Id === parseInt(id));
     if (index === -1) {
       throw new Error('Sales order not found');
     }
 
-const updatedOrder = {
+    // Calculate total amount from products if provided
+    let calculatedTotal = 0;
+    if (updateData.products && updateData.products.length > 0) {
+      calculatedTotal = updateData.products.reduce((sum, product) => {
+        const subtotal = product.Quantity * product.SalePrice;
+        const discountAmount = subtotal * (product.Discount / 100);
+        const taxableAmount = subtotal - discountAmount;
+        const taxAmount = taxableAmount * (product.Tax / 100);
+        return sum + (taxableAmount + taxAmount);
+      }, 0);
+    }
+
+    const updatedOrder = {
       ...salesOrders[index],
       ...updateData,
       Id: parseInt(id), // Ensure ID doesn't change
       QuoteId: updateData.QuoteId || null,
+      TotalAmount: updateData.products && updateData.products.length > 0 ? calculatedTotal : (updateData.TotalAmount || salesOrders[index].TotalAmount || 0),
+      products: updateData.products || salesOrders[index].products || [],
       UpdatedDate: new Date().toISOString()
     };
 
@@ -107,7 +135,7 @@ const updatedOrder = {
   }
 
   // Get orders by amount range
-  async getByAmountRange(minAmount, maxAmount) {
+async getByAmountRange(minAmount, maxAmount) {
     await delay();
     return salesOrders.filter(order => 
       order.TotalAmount >= minAmount && order.TotalAmount <= maxAmount
@@ -118,8 +146,8 @@ const updatedOrder = {
   async getSummary() {
     await delay();
     
-    const totalOrders = salesOrders.length;
-    const totalRevenue = salesOrders.reduce((sum, order) => sum + order.TotalAmount, 0);
+const totalOrders = salesOrders.length;
+    const totalRevenue = salesOrders.reduce((sum, order) => sum + (order.TotalAmount || 0), 0);
     const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
     
     const statusCounts = {};
