@@ -25,17 +25,58 @@ const Header = () => {
                 Pipeline Pro
               </span>
             </div>
-
-            {/* Desktop Navigation */}
+{/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link
+                to="/"
+                className={`px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
+                  location.pathname === "/" 
+                    ? "text-primary bg-blue-50" 
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/contacts"
+                className={`px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
+                  location.pathname === "/contacts" 
+                    ? "text-primary bg-blue-50" 
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                }`}
+              >
+                Contacts
+              </Link>
+              <Link
+                to="/activities"
+                className={`px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
+                  location.pathname === "/activities" 
+                    ? "text-primary bg-blue-50" 
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                }`}
+              >
+                Activities
+              </Link>
+            </nav>
 
             {/* Desktop Actions */}
+            <div className="hidden md:flex items-center space-x-4">
+              <button
+                onClick={() => navigate('/analytics')}
+                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary to-blue-600 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all"
+              >
+                <ApperIcon name="TrendingUp" size={16} />
+                <span>Analytics</span>
+              </button>
+            </div>
 
             {/* Mobile Menu Button */}
+            <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
               >
-<ApperIcon name={isMenuOpen ? "X" : "Menu"} size={24} />
+                <ApperIcon name={isMenuOpen ? "X" : "Menu"} size={24} />
               </button>
             </div>
           </div>
