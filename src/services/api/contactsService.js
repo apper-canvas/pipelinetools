@@ -32,9 +32,10 @@ class ContactsService {
       ? Math.max(...this.contacts.map(c => c.Id))
       : 0
     
-    const newContact = {
+const newContact = {
       ...contactData,
       Id: maxId + 1,
+      CompanyId: contactData.CompanyId || null,
       createdAt: new Date().toISOString(),
       lastContactedAt: null
     }
@@ -51,10 +52,11 @@ class ContactsService {
       throw new Error(`Contact with ID ${id} not found`)
     }
     
-    this.contacts[index] = {
+this.contacts[index] = {
       ...this.contacts[index],
       ...updateData,
-      Id: parseInt(id) // Ensure Id remains an integer
+      Id: parseInt(id), // Ensure Id remains an integer
+      CompanyId: updateData.CompanyId ? parseInt(updateData.CompanyId) : this.contacts[index].CompanyId
     }
     
     return { ...this.contacts[index] }

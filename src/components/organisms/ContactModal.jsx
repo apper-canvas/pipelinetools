@@ -5,27 +5,30 @@ import Button from "@/components/atoms/Button"
 import Input from "@/components/atoms/Input"
 import Select from "@/components/atoms/Select"
 import Textarea from "@/components/atoms/Textarea"
-
+import companiesService from "@/services/api/companiesService"
 const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    company: "",
+    CompanyId: "",
     position: "",
     status: "Prospect",
     notes: ""
   })
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
-
+  const [companies, setCompanies] = useState([])
+  const [companiesLoading, setCompaniesLoading] = useState(false)
   useEffect(() => {
+loadCompanies()
+    
     if (contact) {
       setFormData({
         name: contact.name || "",
         email: contact.email || "",
         phone: contact.phone || "",
-        company: contact.company || "",
+        CompanyId: contact.CompanyId || "",
         position: contact.position || "",
         status: contact.status || "Prospect",
         notes: contact.notes || ""
@@ -35,7 +38,7 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
         name: "",
         email: "",
         phone: "",
-        company: "",
+        CompanyId: "",
         position: "",
         status: "Prospect",
         notes: ""
@@ -43,6 +46,19 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
     }
     setErrors({})
   }, [contact, isOpen])
+
+  const loadCompanies = async () => {
+    try {
+      setCompaniesLoading(true)
+      const companiesData = await companiesService.getAll()
+      setCompanies(companiesData)
+    } catch (error) {
+      console.error('Failed to load companies:', error)
+      setCompanies([])
+    } finally {
+      setCompaniesLoading(false)
+    }
+  }
 
   const validateForm = () => {
     const newErrors = {}
@@ -71,8 +87,9 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
     setLoading(true)
     
     try {
-      const contactData = {
+const contactData = {
         ...formData,
+        CompanyId: formData.CompanyId ? parseInt(formData.CompanyId) : null,
         tags: contact?.tags || [],
         createdAt: contact?.createdAt || new Date().toISOString(),
         lastContactedAt: contact?.lastContactedAt || null
@@ -86,12 +103,17 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
     }
   }
 
-  const handleInputChange = (field, value) => {
+const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: "" }))
     }
   }
+
+  const companyOptions = companies.map(company => ({
+    value: company.Id.toString(),
+    label: company.name
+  }))
 
   return (
     <AnimatePresence>
@@ -182,15 +204,24 @@ const ContactModal = ({ isOpen, onClose, contact, onSave }) => {
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium text-slate-900">Company Information</h3>
                     
-                    <div>
+<div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Company Name
+                        Company
                       </label>
-                      <Input
-                        value={formData.company}
-                        onChange={(e) => handleInputChange("company", e.target.value)}
-                        placeholder="Enter company name"
-                      />
+                      <Select
+                        value={formData.CompanyId}
+                        onChange={(e) => handleInputChange("CompanyId", e.target.value)}
+                        disabled={companiesLoading}
+                      >
+                        <option value="">
+                          {companiesLoading ? "Loading companies..." : "Select a company"}
+                        </option>
+                        {companyOptions.map(option => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </Select>
                     </div>
 
                     <div>
