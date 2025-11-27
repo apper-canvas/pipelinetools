@@ -1,0 +1,101 @@
+[
+  {
+    "Id": 1,
+    "name": "CustomProjects",
+    "description": "Track custom projects and their progress",
+    "status": "active",
+    "type": "custom",
+    "fields": [
+      {
+        "name": "projectName",
+        "type": "text",
+        "required": true,
+        "defaultValue": null
+      },
+      {
+        "name": "budget",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0"
+      },
+      {
+        "name": "startDate",
+        "type": "date",
+        "required": true,
+        "defaultValue": null
+      },
+      {
+        "name": "isActive",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": null
+      }
+    ],
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-20T14:22:00Z"
+  },
+  {
+    "Id": 2,
+    "name": "CustomerFeedback",
+    "description": "Store customer feedback and ratings",
+    "status": "active",
+    "type": "custom",
+    "fields": [
+      {
+        "name": "customerEmail",
+        "type": "email",
+        "required": true,
+        "defaultValue": null
+      },
+      {
+        "name": "rating",
+        "type": "number",
+        "required": true,
+        "defaultValue": "5"
+      },
+      {
+        "name": "feedback",
+        "type": "text",
+        "required": false,
+        "defaultValue": null
+      },
+      {
+        "name": "followUpRequired",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": null
+      }
+    ],
+    "createdAt": "2024-01-10T09:15:00Z",
+    "updatedAt": "2024-01-18T11:45:00Z"
+  },
+  {
+    "Id": 3,
+    "name": "SystemLogs",
+    "description": "System-generated logs for debugging",
+    "status": "inactive",
+    "type": "system",
+    "fields": [
+      {
+        "name": "logLevel",
+        "type": "text",
+        "required": true,
+        "defaultValue": "info"
+      },
+      {
+        "name": "timestamp",
+        "type": "date",
+        "required": true,
+        "defaultValue": null
+      },
+      {
+        "name": "message",
+        "type": "text",
+        "required": true,
+        "defaultValue": null
+      }
+    ],
+    "createdAt": "2024-01-05T08:00:00Z",
+    "updatedAt": "2024-01-05T08:00:00Z"
+  }
+]
