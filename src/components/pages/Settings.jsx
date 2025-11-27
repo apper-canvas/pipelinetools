@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { create, getAll } from "@/services/api/companiesService";
+import { create, getAll, update } from "@/services/api/companiesService";
 import userService from "@/services/api/userService";
 import profileService from "@/services/api/profileService";
 import ApperIcon from "@/components/ApperIcon";
@@ -313,10 +313,10 @@ function CompanyProfileTab() {
 // User Management Tab Component
 // User Management Tab Component
 function UserManagementTab() {
-  const [users, setUsers] = useState([]);
+const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showInviteModal, setShowInviteModal] = useState(false);
-
+  const [editUser, setEditUser] = useState(null);
   const loadUsers = async () => {
     try {
       const data = await userService.getAll();
@@ -343,7 +343,14 @@ function UserManagementTab() {
       toast.error('Failed to remove user');
     }
   };
+const handleEditUser = (user) => {
+    setEditUser(user);
+  };
 
+  const handleUserUpdated = async () => {
+    setEditUser(null);
+    await loadUsers();
+  };
   const getRoleBadgeVariant = (role) => {
     switch (role) {
       case 'admin': return 'default';
@@ -425,10 +432,10 @@ function UserManagementTab() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end gap-2">
-                      <Button
+<Button
                         variant="outline"
                         size="sm"
-                        onClick={() => {/* Edit functionality */}}
+                        onClick={() => handleEditUser(user)}
                       >
                         <ApperIcon name="Edit" size={14} />
                         Edit
@@ -455,9 +462,113 @@ function UserManagementTab() {
       {showInviteModal && (
         <InviteUserModal 
           onClose={() => setShowInviteModal(false)}
-          onUserInvited={loadUsers}
+onUserInvited={loadUsers}
         />
       )}
+
+      {/* Edit User Modal */}
+      {editUser && (
+        <EditUserModal 
+          user={editUser}
+          onClose={() => setEditUser(null)}
+          onUserUpdated={handleUserUpdated}
+        />
+      )}
+    </div>
+  );
+}
+
+// Edit User Modal Component
+function EditUserModal({ user, onClose, onUserUpdated }) {
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: user.email || '',
+    role: user.role || 'user',
+    firstName: user.firstName || '',
+    lastName: user.lastName || ''
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await userService.update(user.Id, formData);
+      toast.success('User updated successfully');
+      onUserUpdated();
+    } catch (error) {
+      toast.error('Failed to update user');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+        <div className="flex justify-between items-center p-6 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">Edit User</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <ApperIcon name="X" size={20} />
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="p-6">
+          <div className="space-y-4">
+            <Input
+              type="email"
+              label="Email Address"
+              value={formData.email}
+              onChange={(e) => handleChange('email', e.target.value)}
+              required
+            />
+            
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                label="First Name"
+                value={formData.firstName}
+                onChange={(e) => handleChange('firstName', e.target.value)}
+                required
+              />
+              <Input
+                label="Last Name"
+                value={formData.lastName}
+                onChange={(e) => handleChange('lastName', e.target.value)}
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+              <select
+                value={formData.role}
+                onChange={(e) => handleChange('role', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="user">User</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+          
+          <div className="flex justify-end gap-3 mt-6">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? <ApperIcon name="Loader2" size={16} className="animate-spin" /> : null}
+              Save Changes
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
@@ -728,9 +839,12 @@ setIsLoading(false);
                     onClick={downloadSubscriptionData}
                     disabled={isLoading}
                   >
+                    {isLoading ? (
+                      <ApperIcon name="Loader2" size={14} className="animate-spin" />
+                    ) : (
+                      <ApperIcon name="Download" size={14} />
+                    )}
                     {isLoading ? 'Downloading...' : 'Download'}
-                    <ApperIcon name="Download" size={14} />
-                    Download
                   </Button>
                 </div>
               </div>
