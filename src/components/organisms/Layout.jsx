@@ -1,5 +1,4 @@
 import { Outlet, Link, useLocation } from "react-router-dom"
-import Header from "@/components/organisms/Header"
 import ApperIcon from "@/components/ApperIcon"
 const Layout = () => {
 const location = useLocation()
@@ -58,8 +57,7 @@ const location = useLocation()
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header />
-<main className="flex-1 pt-16 overflow-y-auto">
+<main className="flex-1 overflow-y-auto">
           <Outlet />
         </main>
       </div>
