@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import AddModal from "@/components/organisms/AddModal";
 import Pipeline from "@/components/pages/Pipeline";
 
 const Header = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
 
 
@@ -32,36 +29,18 @@ const Header = () => {
             {/* Desktop Navigation */}
 
             {/* Desktop Actions */}
-            <div className="hidden md:flex items-center space-x-4">
-              <Button
-                onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center space-x-2"
-              >
-                <ApperIcon name="Plus" size={20} />
-                <span>Add</span>
-              </Button>
-            </div>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center space-x-2">
-              <Button
-                onClick={() => setIsAddModalOpen(true)}
-                size="sm"
-                className="p-2"
-              >
-                <ApperIcon name="Plus" size={20} />
-              </Button>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
               >
-                <ApperIcon name={isMenuOpen ? "X" : "Menu"} size={24} />
+<ApperIcon name={isMenuOpen ? "X" : "Menu"} size={24} />
               </button>
             </div>
-</div>
+          </div>
         </div>
       </header>
-
       {/* Mobile Navigation */}
         <AnimatePresence>
           {isMenuOpen && (
@@ -92,18 +71,6 @@ const Header = () => {
         </AnimatePresence>
 
       {/* Add Modal */}
-      <AddModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSuccess={(type, data) => {
-          setIsAddModalOpen(false)
-          if (type === "contact") {
-            navigate("/contacts")
-          } else if (type === "deal") {
-            navigate("/")
-          }
-        }}
-      />
     </>
   )
 }
