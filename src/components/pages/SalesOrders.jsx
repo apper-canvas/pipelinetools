@@ -577,9 +577,9 @@ function OrderModal({ order, contacts, companies, onSave, onClose }) {
     }
   }
 
-  const contactOptions = contacts.map(contact => ({
+const contactOptions = contacts.map(contact => ({
     value: contact.Id.toString(),
-    label: `${contact.FirstName} ${contact.LastName}${contact.Email ? ` (${contact.Email})` : ''}`
+    label: `${contact.name}${contact.company ? ` (${contact.company})` : ''}${contact.email ? ` - ${contact.email}` : ''}`
   }));
 
   const companyOptions = companies.map(company => ({
