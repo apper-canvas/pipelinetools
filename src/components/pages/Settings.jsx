@@ -464,6 +464,8 @@ function UserManagementTab() {
 
 // Subscription Tab Component
 function SubscriptionTab() {
+  const [isLoading, setIsLoading] = useState(false);
+  
   const subscription = {
     plan: 'Professional',
     status: 'active',
@@ -475,26 +477,98 @@ function SubscriptionTab() {
     maxStorage: '100 GB'
   };
 
-  const handleUpdateBilling = () => {
-    toast.info('Redirecting to billing management...', {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
+  const handleUpdateBilling = async () => {
+    try {
+      setIsLoading(true);
+      toast.info('Redirecting to billing management...', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      // Simulate billing portal redirect
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // In a real implementation, this would redirect to Stripe/payment provider
+      window.open('https://billing.stripe.com/login', '_blank');
+      
+      toast.success('Billing portal opened successfully', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } catch (error) {
+      toast.error('Failed to access billing management. Please try again.', {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleUpgradePlan = () => {
-    toast.info('Opening plan upgrade options...', {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
+  const handleUpgradePlan = async () => {
+    try {
+      setIsLoading(true);
+      toast.info('Loading upgrade options...', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      // Simulate upgrade process
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      
+      // In a real implementation, this would show upgrade modal or redirect
+      const confirmed = window.confirm(
+        'Upgrade to Pro Plan?\n\n• Unlimited contacts and deals\n• Advanced analytics\n• Premium support\n\n$29/month'
+      );
+      
+      if (confirmed) {
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        toast.success('Plan upgrade initiated! Check your email for confirmation.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } else {
+        toast.info('Plan upgrade cancelled', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    } catch (error) {
+      toast.error('Failed to load upgrade options. Please try again.', {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
