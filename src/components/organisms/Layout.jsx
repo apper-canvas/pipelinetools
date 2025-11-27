@@ -11,8 +11,9 @@ const navigation = [
     { name: "Quotes", href: "/quotes", icon: "FileText" },
 { name: "Sales Orders", href: "/sales-orders", icon: "ShoppingCart" },
     { name: "Analytics", href: "/analytics", icon: "TrendingUp" },
-    { name: "Reports", href: "/reports", icon: "FileBarChart" },
-    { name: "Customize", href: "/customize", icon: "Settings" }
+{ name: "Reports", href: "/reports", icon: "FileBarChart" },
+    { name: "Customize", href: "/customize", icon: "Wrench" },
+    { name: "Settings", href: "/settings", icon: "Settings" }
   ]
 
   const isActive = (href) => {

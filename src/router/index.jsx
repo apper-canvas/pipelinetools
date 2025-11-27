@@ -12,6 +12,7 @@ const Reports = lazy(() => import("@/components/pages/Reports"))
 const Quotes = lazy(() => import("@/components/pages/Quotes"))
 const SalesOrders = lazy(() => import("@/components/pages/SalesOrders"))
 const Customize = lazy(() => import("@/components/pages/Customize"))
+const Settings = lazy(() => import("@/components/pages/Settings"))
 const NotFound = lazy(() => import("@/components/pages/NotFound"))
 // Loading fallback component
 const LoadingFallback = () => (
@@ -122,6 +123,14 @@ const mainRoutes = [
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <Customize />
+      </Suspense>
+    )
+},
+  {
+    path: "settings",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Settings />
       </Suspense>
     )
   },
