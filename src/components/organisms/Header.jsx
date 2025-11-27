@@ -7,7 +7,6 @@ import Pipeline from "@/components/pages/Pipeline";
 const Header = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
 
 
@@ -60,56 +59,12 @@ const Header = () => {
             </nav>
 
             {/* Desktop Actions */}
-            <div className="hidden md:flex items-center space-x-4">
-              <button
-                onClick={() => navigate('/analytics')}
-                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary to-blue-600 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all"
-              >
-                <ApperIcon name="TrendingUp" size={16} />
-                <span>Analytics</span>
-              </button>
-            </div>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-              >
-                <ApperIcon name={isMenuOpen ? "X" : "Menu"} size={24} />
-              </button>
-            </div>
           </div>
         </div>
       </header>
       {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-t border-slate-200"
-            >
-              <div className="px-4 py-4 space-y-2">
-                <Link
-                  to="/"
-                  className="block px-3 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/contacts"
-                  className="block px-3 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Contacts
-                </Link>
-              </div>
-</motion.div>
-          )}
-        </AnimatePresence>
 
       {/* Add Modal */}
     </>
