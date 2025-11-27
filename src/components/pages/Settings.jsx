@@ -62,6 +62,8 @@ function Settings() {
 // My Profile Tab Component
 function MyProfileTab() {
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     firstName: 'John',
     lastName: 'Doe',
@@ -70,7 +72,8 @@ function MyProfileTab() {
     title: 'Sales Manager',
     department: 'Sales',
     timezone: 'America/New_York',
-    language: 'English'
+    language: 'English',
+    profilePhoto: null
   });
 
   const handleSubmit = async (e) => {
@@ -84,10 +87,59 @@ function MyProfileTab() {
     } finally {
       setLoading(false);
     }
-  };
+};
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handlePhotoUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Please select a valid image file (JPG, PNG, or GIF)');
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      toast.error('File size must be less than 5MB');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      // Create a preview URL
+      const previewUrl = URL.createObjectURL(file);
+      
+      // Update form data with new photo
+      setFormData(prev => ({ ...prev, profilePhoto: previewUrl }));
+      
+      // Here you would typically upload to a server
+      // For now, we'll simulate an upload with profileService
+      await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate upload delay
+      
+      toast.success('Profile photo updated successfully!');
+    } catch (error) {
+      console.error('Photo upload error:', error);
+      toast.error('Failed to update profile photo. Please try again.');
+      // Reset to previous state on error
+      setFormData(prev => ({ ...prev, profilePhoto: null }));
+    } finally {
+      setUploading(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -101,21 +153,49 @@ function MyProfileTab() {
         {/* Avatar Section */}
         <div className="mb-6 flex items-center gap-6">
           <div className="relative">
-            <div className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-semibold">
-              JD
-            </div>
-            <button className="absolute -bottom-1 -right-1 p-1 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-50">
-              <ApperIcon name="Camera" size={16} className="text-gray-600" />
-            </button>
+<div className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-semibold overflow-hidden">
+            {formData.profilePhoto ? (
+              <img 
+                src={formData.profilePhoto} 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              'JD'
+            )}
           </div>
-          <div>
-            <h3 className="font-medium text-gray-900">Profile Photo</h3>
-            <p className="text-sm text-gray-600">Upload a new avatar. JPG, PNG or GIF format.</p>
-            <Button variant="outline" className="mt-2">
-              <ApperIcon name="Upload" size={16} />
-              Change Photo
-            </Button>
-          </div>
+          <button 
+            onClick={triggerFileInput}
+            disabled={uploading}
+            className="absolute -bottom-1 -right-1 p-1 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
+          >
+            <ApperIcon 
+              name={uploading ? "Loader2" : "Camera"} 
+              size={16} 
+              className={`text-gray-600 ${uploading ? 'animate-spin' : ''}`} 
+            />
+          </button>
+        </div>
+        <div>
+          <h3 className="font-medium text-gray-900">Profile Photo</h3>
+          <p className="text-sm text-gray-600">Upload a new avatar. JPG, PNG or GIF format. Max 5MB.</p>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/jpg,image/png,image/gif"
+            onChange={handlePhotoUpload}
+            className="hidden"
+          />
+          <Button 
+            variant="outline" 
+            className="mt-2"
+            onClick={triggerFileInput}
+            disabled={uploading}
+          >
+            <ApperIcon name={uploading ? "Loader2" : "Upload"} size={16} className={uploading ? 'animate-spin' : ''} />
+            {uploading ? 'Uploading...' : 'Change Photo'}
+          </Button>
+        </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
