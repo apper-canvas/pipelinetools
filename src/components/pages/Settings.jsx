@@ -466,6 +466,50 @@ function UserManagementTab() {
 function SubscriptionTab() {
   const [isLoading, setIsLoading] = useState(false);
   
+  const downloadSubscriptionData = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Generate subscription data
+      const subscriptionData = [
+        ['Date', 'Plan', 'Amount', 'Status', 'Invoice'],
+        ['2024-01-15', 'Professional', '$49.00', 'Paid', 'INV-2024-001'],
+        ['2023-12-15', 'Professional', '$49.00', 'Paid', 'INV-2023-012'],
+        ['2023-11-15', 'Professional', '$49.00', 'Paid', 'INV-2023-011'],
+        ['2023-10-15', 'Professional', '$49.00', 'Paid', 'INV-2023-010'],
+        ['2023-09-15', 'Professional', '$49.00', 'Paid', 'INV-2023-009'],
+        ['', '', '', '', ''],
+        ['Usage Statistics', '', '', '', ''],
+        ['Total Users', '12', '', '', ''],
+        ['Active Pipelines', '8', '', '', ''],
+        ['Deals Closed', '156', '', '', ''],
+        ['Storage Used', '2.3 GB', '', '', ''],
+      ];
+      
+      // Convert to CSV
+      const csvContent = subscriptionData
+        .map(row => row.map(cell => `"${cell}"`).join(','))
+        .join('\n');
+      
+      // Create and trigger download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `subscription-data-${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast.success('Subscription data downloaded successfully');
+    } catch (error) {
+      toast.error('Failed to download subscription data');
+    } finally {
   const subscription = {
     plan: 'Professional',
     status: 'active',
@@ -567,7 +611,9 @@ function SubscriptionTab() {
         draggable: true,
       });
     } finally {
-      setIsLoading(false);
+setIsLoading(false);
+    }
+  };
     }
   };
 
@@ -673,7 +719,13 @@ function SubscriptionTab() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Badge variant="default">Paid</Badge>
-                  <Button variant="outline" size="sm">
+<Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={downloadSubscriptionData}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Downloading...' : 'Download'}
                     <ApperIcon name="Download" size={14} />
                     Download
                   </Button>
