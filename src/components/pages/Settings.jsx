@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 import { create, getAll, update } from "@/services/api/companiesService";
 import userService from "@/services/api/userService";
@@ -189,6 +189,11 @@ function MyProfileTab() {
 // Company Profile Tab Component
 function CompanyProfileTab() {
   const [loading, setLoading] = useState(false);
+  const [logoUploading, setLogoUploading] = useState(false);
+  const [logoPreview, setLogoPreview] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const fileInputRef = useRef(null);
+  
   const [formData, setFormData] = useState({
     companyName: 'Acme Corporation',
     website: 'https://acme.com',
@@ -198,14 +203,19 @@ function CompanyProfileTab() {
     city: 'New York',
     state: 'NY',
     zipCode: '10001',
-    country: 'United States'
+    country: 'United States',
+    logo: null
   });
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await profileService.updateCompanyProfile(formData);
+      const profileData = { ...formData };
+      if (logoFile) {
+        profileData.logo = logoFile;
+      }
+      await profileService.updateCompanyProfile(profileData);
       toast.success('Company profile updated successfully');
     } catch (error) {
       toast.error('Failed to update company profile');
@@ -214,8 +224,55 @@ function CompanyProfileTab() {
     }
   };
 
-  const handleChange = (field, value) => {
+const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleLogoUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    setLogoUploading(true);
+    try {
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+      setLogoPreview(previewUrl);
+      setLogoFile(file);
+      setFormData(prev => ({ ...prev, logo: file.name }));
+      toast.success('Logo selected successfully');
+    } catch (error) {
+      toast.error('Failed to process image');
+    } finally {
+      setLogoUploading(false);
+    }
+  };
+
+  const handleRemoveLogo = () => {
+    if (logoPreview) {
+      URL.revokeObjectURL(logoPreview);
+    }
+    setLogoPreview(null);
+    setLogoFile(null);
+    setFormData(prev => ({ ...prev, logo: null }));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -228,16 +285,58 @@ function CompanyProfileTab() {
 
         {/* Company Logo Section */}
         <div className="mb-6 flex items-center gap-6">
-          <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300">
-            <ApperIcon name="Building2" size={24} className="text-gray-400" />
+<div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300 overflow-hidden">
+            {logoPreview ? (
+              <img 
+                src={logoPreview} 
+                alt="Company logo preview" 
+                className="w-full h-full object-cover rounded-lg"
+              />
+            ) : (
+              <ApperIcon name="Building2" size={24} className="text-gray-400" />
+            )}
           </div>
           <div>
             <h3 className="font-medium text-gray-900">Company Logo</h3>
-            <p className="text-sm text-gray-600">Upload your company logo. Recommended size: 200x200px</p>
-            <Button variant="outline" className="mt-2">
-              <ApperIcon name="Upload" size={16} />
-              Upload Logo
-            </Button>
+            <p className="text-sm text-gray-600">Upload your company logo. Recommended size: 200x200px, max 5MB</p>
+            <div className="flex items-center gap-2 mt-2">
+              <Button 
+                type="button"
+                variant="outline" 
+                onClick={handleLogoUpload}
+                disabled={logoUploading}
+              >
+                {logoUploading ? (
+                  <>
+                    <ApperIcon name="Loader2" size={16} className="animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <ApperIcon name="Upload" size={16} />
+                    {logoPreview ? 'Change Logo' : 'Upload Logo'}
+                  </>
+                )}
+              </Button>
+              {logoPreview && (
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  onClick={handleRemoveLogo}
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  <ApperIcon name="Trash2" size={16} />
+                  Remove
+                </Button>
+              )}
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
           </div>
         </div>
 
