@@ -10,7 +10,8 @@ const navigation = [
     { name: "Activities", href: "/activities", icon: "Activity" },
     { name: "Quotes", href: "/quotes", icon: "FileText" },
     { name: "Sales Orders", href: "/sales-orders", icon: "ShoppingCart" },
-    { name: "Analytics", href: "/analytics", icon: "TrendingUp" }
+{ name: "Analytics", href: "/analytics", icon: "TrendingUp" },
+    { name: "Reports", href: "/reports", icon: "FileBarChart" }
   ]
 
   const isActive = (href) => {
