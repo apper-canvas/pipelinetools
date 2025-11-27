@@ -58,11 +58,11 @@ const Header = () => {
                 <ApperIcon name={isMenuOpen ? "X" : "Menu"} size={24} />
               </button>
             </div>
-          </div>
-        </div>
 </div>
+        </div>
+      </header>
 
-        {/* Mobile Navigation */}
+      {/* Mobile Navigation */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
@@ -87,10 +87,9 @@ const Header = () => {
                   Contacts
                 </Link>
               </div>
-            </motion.div>
+</motion.div>
           )}
         </AnimatePresence>
-      </header>
 
       {/* Add Modal */}
       <AddModal
