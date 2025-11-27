@@ -475,6 +475,28 @@ function SubscriptionTab() {
     maxStorage: '100 GB'
   };
 
+  const handleUpdateBilling = () => {
+    toast.info('Redirecting to billing management...', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  const handleUpgradePlan = () => {
+    toast.info('Opening plan upgrade options...', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
   return (
     <div className="max-w-4xl">
       <div className="mb-6">
@@ -510,11 +532,11 @@ function SubscriptionTab() {
             </div>
 
             <div className="flex gap-3 mt-6">
-              <Button variant="outline">
+              <Button variant="outline" onClick={handleUpdateBilling}>
                 <ApperIcon name="CreditCard" size={16} />
                 Update Billing
               </Button>
-              <Button>
+              <Button onClick={handleUpgradePlan}>
                 <ApperIcon name="ArrowUp" size={16} />
                 Upgrade Plan
               </Button>
