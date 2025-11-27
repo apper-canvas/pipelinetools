@@ -16,12 +16,13 @@ import Empty from '@/components/ui/Empty';
 import salesOrdersService from '@/services/api/salesOrdersService';
 import contactsService from '@/services/api/contactsService';
 import companiesService from '@/services/api/companiesService';
-
+import quotesService from '@/services/api/quotesService';
 function SalesOrders() {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [companies, setCompanies] = useState([]);
+  const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -47,8 +48,9 @@ function SalesOrders() {
 
   useEffect(() => {
     loadOrders();
-    loadContacts();
+loadContacts();
     loadCompanies();
+    loadQuotes();
   }, []);
 
   useEffect(() => {
@@ -85,8 +87,17 @@ function SalesOrders() {
     } catch (err) {
       console.error('Failed to load companies:', err);
     }
-  }
+}
 
+  const loadQuotes = async () => {
+    try {
+      const quotesData = await quotesService.getAll();
+      setQuotes(quotesData);
+    } catch (err) {
+      console.error('Failed to load quotes:', err);
+      toast.error('Failed to load quotes');
+    }
+  };
   function filterAndSortOrders() {
     let filtered = [...orders];
 
@@ -428,10 +439,11 @@ function SalesOrders() {
 
       {/* Modal */}
       {showModal && (
-        <OrderModal
+<OrderModal
           order={editingOrder}
           contacts={contacts}
           companies={companies}
+          quotes={quotes}
           onSave={handleSaveOrder}
           onClose={() => {
             setShowModal(false);
@@ -443,12 +455,13 @@ function SalesOrders() {
   );
 }
 
-function OrderModal({ order, contacts, companies, onSave, onClose }) {
+function OrderModal({ order, contacts, companies, quotes, onSave, onClose }) {
   const [formData, setFormData] = useState({
     OrderNumber: '',
     Title: '',
     ContactId: '',
     CompanyId: '',
+    QuoteId: '',
     TotalAmount: '',
     Status: 'Draft',
     OrderDate: '',
@@ -463,12 +476,13 @@ function OrderModal({ order, contacts, companies, onSave, onClose }) {
   const statuses = ['Draft', 'Confirmed', 'In Progress', 'Shipped', 'Delivered', 'Cancelled'];
 
   useEffect(() => {
-    if (order) {
+if (order) {
       setFormData({
         OrderNumber: order.OrderNumber || '',
         Title: order.Title || '',
         ContactId: order.ContactId?.toString() || '',
         CompanyId: order.CompanyId?.toString() || '',
+        QuoteId: order.QuoteId?.toString() || '',
         TotalAmount: order.TotalAmount?.toString() || '',
         Status: order.Status || 'Draft',
         OrderDate: order.OrderDate ? format(new Date(order.OrderDate), 'yyyy-MM-dd') : '',
@@ -556,8 +570,9 @@ function OrderModal({ order, contacts, companies, onSave, onClose }) {
     try {
       const submitData = {
         ...formData,
-        ContactId: parseInt(formData.ContactId),
+ContactId: parseInt(formData.ContactId),
         CompanyId: parseInt(formData.CompanyId),
+        QuoteId: formData.QuoteId ? parseInt(formData.QuoteId) : null,
         TotalAmount: parseFloat(formData.TotalAmount),
         OrderDate: new Date(formData.OrderDate).toISOString(),
         DeliveryDate: formData.DeliveryDate ? new Date(formData.DeliveryDate).toISOString() : null
@@ -576,10 +591,14 @@ function OrderModal({ order, contacts, companies, onSave, onClose }) {
       onClose();
     }
   }
-
 const contactOptions = contacts.map(contact => ({
     value: contact.Id.toString(),
     label: `${contact.name}${contact.company ? ` (${contact.company})` : ''}${contact.email ? ` - ${contact.email}` : ''}`
+  }));
+
+  const quoteOptions = quotes.map(quote => ({
+    value: quote.Id.toString(),
+    label: `${quote.QuoteNumber || `Quote #${quote.Id}`}${quote.CustomerName ? ` - ${quote.CustomerName}` : ''}${quote.TotalAmount ? ` ($${quote.TotalAmount.toLocaleString()})` : ''}`
   }));
 
   const companyOptions = companies.map(company => ({
@@ -698,8 +717,27 @@ const contactOptions = contacts.map(contact => ({
                 required
               />
             </div>
-          </div>
+</div>
 
+          {/* Quote Selection */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Quote (Optional)
+            </label>
+            <Select
+              value={formData.QuoteId}
+              onChange={(e) => handleInputChange(e)}
+              name="QuoteId"
+              className="w-full"
+            >
+              <option value="">Select a quote (optional)...</option>
+              {quoteOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Select>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Total Amount */}
             <div>

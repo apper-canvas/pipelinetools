@@ -27,12 +27,13 @@ class SalesOrdersService {
   }
 
   // Create new sales order
-  async create(orderData) {
+async create(orderData) {
     await delay();
     
     const newOrder = {
       ...orderData,
       Id: nextId++,
+      QuoteId: orderData.QuoteId || null,
       CreatedDate: new Date().toISOString(),
       UpdatedDate: new Date().toISOString()
     };
@@ -50,10 +51,11 @@ class SalesOrdersService {
       throw new Error('Sales order not found');
     }
 
-    const updatedOrder = {
+const updatedOrder = {
       ...salesOrders[index],
       ...updateData,
       Id: parseInt(id), // Ensure ID doesn't change
+      QuoteId: updateData.QuoteId || null,
       UpdatedDate: new Date().toISOString()
     };
 
