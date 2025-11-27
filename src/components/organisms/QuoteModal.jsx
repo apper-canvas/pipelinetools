@@ -96,7 +96,27 @@ if (quote) {
       }
     }
   }
+function copyBillingToShipping() {
+    setFormData(prev => ({
+      ...prev,
+      ShippingStreet: prev.BillingStreet,
+      ShippingCity: prev.BillingCity,
+      ShippingState: prev.BillingState,
+      ShippingCountry: prev.BillingCountry,
+      ShippingPin: prev.BillingPin
+    }));
 
+    // Clear any shipping address errors since we're copying valid billing data
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors.ShippingStreet;
+      delete newErrors.ShippingCity;
+      delete newErrors.ShippingState;
+      delete newErrors.ShippingCountry;
+      delete newErrors.ShippingPin;
+      return newErrors;
+    });
+  }
   function validateForm() {
     const newErrors = {};
 
@@ -457,8 +477,20 @@ const contactOptions = contacts.map(contact => ({
           </div>
 
           {/* Shipping Address Section */}
-          <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Shipping Address</h3>
+<div className="border-t border-gray-200 pt-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-medium text-gray-900">Shipping Address</h3>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={copyBillingToShipping}
+                className="flex items-center gap-2 text-sm"
+              >
+                <ApperIcon name="Copy" size={16} />
+                Copy from Billing Address
+              </Button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
