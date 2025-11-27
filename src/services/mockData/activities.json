@@ -1,0 +1,152 @@
+[
+  {
+    "Id": 1,
+    "type": "Call",
+    "contactId": "1",
+    "dealId": "1",
+    "subject": "Contract negotiation follow-up",
+    "notes": "Discussed final terms and pricing adjustments. Legal team will review contract by end of week.",
+    "date": "2024-01-20T15:30:00Z",
+    "createdAt": "2024-01-20T15:35:00Z"
+  },
+  {
+    "Id": 2,
+    "type": "Email",
+    "contactId": "2",
+    "dealId": "2",
+    "subject": "Startup pricing proposal sent",
+    "notes": "Sent customized pricing proposal with startup discount. Included implementation timeline and support details.",
+    "date": "2024-01-18T11:45:00Z",
+    "createdAt": "2024-01-18T11:50:00Z"
+  },
+  {
+    "Id": 3,
+    "type": "Meeting",
+    "contactId": "4",
+    "dealId": "4",
+    "subject": "Creative requirements workshop",
+    "notes": "Detailed discussion about branding requirements and creative deliverables. Technical integration points identified.",
+    "date": "2024-01-19T14:20:00Z",
+    "createdAt": "2024-01-19T16:45:00Z"
+  },
+  {
+    "Id": 4,
+    "type": "Call",
+    "contactId": "6",
+    "dealId": "5",
+    "subject": "HIPAA compliance review",
+    "notes": "Reviewed security protocols and compliance requirements. All requirements met, proceeding to next phase.",
+    "date": "2024-01-17T10:15:00Z",
+    "createdAt": "2024-01-17T10:30:00Z"
+  },
+  {
+    "Id": 5,
+    "type": "Email",
+    "contactId": "3",
+    "dealId": "3",
+    "subject": "ROI analysis and case studies",
+    "notes": "Sent detailed ROI analysis with industry-specific case studies. Scheduled follow-up call for next week.",
+    "date": "2024-01-16T09:20:00Z",
+    "createdAt": "2024-01-16T09:25:00Z"
+  },
+  {
+    "Id": 6,
+    "type": "Note",
+    "contactId": "8",
+    "dealId": "7",
+    "subject": "EduTech pilot program feedback",
+    "notes": "Positive feedback received on pilot program proposal. VP of Sales confirmed budget availability for Q1.",
+    "date": "2024-01-16T12:30:00Z",
+    "createdAt": "2024-01-16T12:35:00Z"
+  },
+  {
+    "Id": 7,
+    "type": "Meeting",
+    "contactId": "7",
+    "dealId": "6",
+    "subject": "CFO presentation - cost optimization",
+    "notes": "Presented cost optimization analysis to CFO and finance team. Strong interest shown, awaiting board approval.",
+    "date": "2024-01-15T16:45:00Z",
+    "createdAt": "2024-01-15T17:30:00Z"
+  },
+  {
+    "Id": 8,
+    "type": "Call",
+    "contactId": "1",
+    "dealId": "8",
+    "subject": "License expansion discussion",
+    "notes": "Discussed additional license requirements for Q1 growth. Agreed on pricing and implementation timeline.",
+    "date": "2024-01-14T13:15:00Z",
+    "createdAt": "2024-01-14T13:20:00Z"
+  },
+  {
+    "Id": 9,
+    "type": "Email",
+    "contactId": "5",
+    "dealId": null,
+    "subject": "Quarterly check-in",
+    "notes": "Sent quarterly update and new product announcements. Keeping relationship warm for future opportunities.",
+    "date": "2024-01-12T10:20:00Z",
+    "createdAt": "2024-01-12T10:25:00Z"
+  },
+  {
+    "Id": 10,
+    "type": "Call",
+    "contactId": "2",
+    "dealId": "9",
+    "subject": "Starter pack configuration call",
+    "notes": "Walked through starter pack features and configuration options. Discussed onboarding timeline.",
+    "date": "2024-01-21T14:20:00Z",
+    "createdAt": "2024-01-21T14:30:00Z"
+  },
+  {
+    "Id": 11,
+    "type": "Meeting",
+    "contactId": "4",
+    "dealId": "10",
+    "subject": "Integration architecture review",
+    "notes": "Technical meeting to review integration points and API requirements. Development timeline established.",
+    "date": "2024-01-20T11:30:00Z",
+    "createdAt": "2024-01-20T12:15:00Z"
+  },
+  {
+    "Id": 12,
+    "type": "Email",
+    "contactId": "6",
+    "dealId": "5",
+    "subject": "Security audit documentation",
+    "notes": "Provided comprehensive security audit documentation and compliance certificates for HIPAA review.",
+    "date": "2024-01-19T08:45:00Z",
+    "createdAt": "2024-01-19T08:50:00Z"
+  },
+  {
+    "Id": 13,
+    "type": "Note",
+    "contactId": "3",
+    "dealId": "3",
+    "subject": "Competitor analysis insights",
+    "notes": "Research completed on competitor offerings. Our solution provides 25% better ROI based on analysis.",
+    "date": "2024-01-18T15:10:00Z",
+    "createdAt": "2024-01-18T15:15:00Z"
+  },
+  {
+    "Id": 14,
+    "type": "Call",
+    "contactId": "8",
+    "dealId": "7",
+    "subject": "Implementation timeline confirmation",
+    "notes": "Confirmed go-live dates and implementation milestones. Training schedule to be finalized next week.",
+    "date": "2024-01-17T16:20:00Z",
+    "createdAt": "2024-01-17T16:25:00Z"
+  },
+  {
+    "Id": 15,
+    "type": "Meeting",
+    "contactId": "1",
+    "dealId": "1",
+    "subject": "Executive stakeholder alignment",
+    "notes": "Meeting with key stakeholders to ensure alignment on contract terms and implementation approach.",
+    "date": "2024-01-16T14:00:00Z",
+    "createdAt": "2024-01-16T15:30:00Z"
+  }
+]
