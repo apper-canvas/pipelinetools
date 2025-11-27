@@ -1,9 +1,10 @@
-import { useState } from "react"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
-import ApperIcon from "@/components/ApperIcon"
-import Button from "@/components/atoms/Button"
-import AddModal from "@/components/organisms/AddModal"
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import AddModal from "@/components/organisms/AddModal";
+import Pipeline from "@/components/pages/Pipeline";
 
 const Header = () => {
   const location = useLocation()
@@ -11,19 +12,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
-  const navigation = [
-    { name: "Pipeline", href: "/", icon: "BarChart3" },
-    { name: "Contacts", href: "/contacts", icon: "Users" },
-    { name: "Activities", href: "/activities", icon: "Activity" },
-    { name: "Analytics", href: "/analytics", icon: "TrendingUp" }
-  ]
 
-  const isActive = (href) => {
-    if (href === "/") {
-      return location.pathname === "/"
-    }
-    return location.pathname.startsWith(href)
-  }
 
   return (
     <>
@@ -41,22 +30,6 @@ const Header = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
-                    isActive(item.href)
-                      ? "text-primary bg-blue-50 shadow-sm"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
-                >
-                  <ApperIcon name={item.icon} size={20} />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </nav>
 
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center space-x-4">
@@ -87,6 +60,7 @@ const Header = () => {
             </div>
           </div>
         </div>
+</div>
 
         {/* Mobile Navigation */}
         <AnimatePresence>
@@ -97,22 +71,21 @@ const Header = () => {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-white border-t border-slate-200"
             >
-              <div className="px-4 py-2 space-y-1">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`flex items-center space-x-3 px-3 py-3 rounded-lg font-medium transition-all duration-200 ${
-                      isActive(item.href)
-                        ? "text-primary bg-blue-50 shadow-sm"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                    }`}
-                  >
-                    <ApperIcon name={item.icon} size={20} />
-                    <span>{item.name}</span>
-                  </Link>
-                ))}
+              <div className="px-4 py-4 space-y-2">
+                <Link
+                  to="/"
+                  className="block px-3 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  to="/contacts"
+                  className="block px-3 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Contacts
+                </Link>
               </div>
             </motion.div>
           )}
