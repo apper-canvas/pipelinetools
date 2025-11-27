@@ -59,7 +59,7 @@ const location = useLocation()
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header />
-        <main className="flex-1 pt-16 md:pt-0 overflow-y-auto">
+<main className="flex-1 pt-16 overflow-y-auto">
           <Outlet />
         </main>
       </div>
