@@ -510,6 +510,11 @@ function SubscriptionTab() {
     } catch (error) {
       toast.error('Failed to download subscription data');
     } finally {
+setIsLoading(false);
+    }
+  };
+
+  // Subscription data and handlers at component level
   const subscription = {
     plan: 'Professional',
     status: 'active',
@@ -611,9 +616,7 @@ function SubscriptionTab() {
         draggable: true,
       });
     } finally {
-setIsLoading(false);
-    }
-  };
+      setIsLoading(false);
     }
   };
 
