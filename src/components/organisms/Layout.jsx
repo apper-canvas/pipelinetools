@@ -3,9 +3,10 @@ import ApperIcon from "@/components/ApperIcon"
 const Layout = () => {
 const location = useLocation()
 
-  const navigation = [
+const navigation = [
     { name: "Pipeline", href: "/", icon: "BarChart3" },
     { name: "Contacts", href: "/contacts", icon: "Users" },
+    { name: "Company", href: "/company", icon: "Building2" },
     { name: "Activities", href: "/activities", icon: "Activity" },
     { name: "Analytics", href: "/analytics", icon: "TrendingUp" }
   ]

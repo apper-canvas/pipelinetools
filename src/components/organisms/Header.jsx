@@ -25,7 +25,7 @@ const Header = () => {
               </span>
             </div>
 {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
+<nav className="hidden md:flex items-center space-x-8">
               <Link
                 to="/"
                 className={`px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
@@ -45,6 +45,16 @@ const Header = () => {
                 }`}
               >
                 Contacts
+              </Link>
+              <Link
+                to="/company"
+                className={`px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
+                  location.pathname === "/company" 
+                    ? "text-primary bg-blue-50" 
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                }`}
+              >
+                Company
               </Link>
               <Link
                 to="/activities"
