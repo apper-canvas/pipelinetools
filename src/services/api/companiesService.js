@@ -13,7 +13,10 @@ class CompaniesService {
 
   async getAll() {
     await delay()
-    return [...this.companies]
+return this.companies.map(company => ({
+      ...company,
+      Name: company.name || company.Name
+    }));
   }
 
   async getById(id) {
