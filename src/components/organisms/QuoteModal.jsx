@@ -7,7 +7,7 @@ import Textarea from '@/components/atoms/Textarea';
 import Select from '@/components/atoms/Select';
 
 function QuoteModal({ quote, contacts, companies, onSave, onClose }) {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     QuoteNumber: '',
     Title: '',
     ContactId: '',
@@ -16,7 +16,17 @@ function QuoteModal({ quote, contacts, companies, onSave, onClose }) {
     Status: 'Draft',
     ValidUntil: '',
     Description: '',
-    Terms: ''
+    Terms: '',
+    BillingStreet: '',
+    BillingCity: '',
+    BillingState: '',
+    BillingCountry: '',
+    BillingPin: '',
+    ShippingStreet: '',
+    ShippingCity: '',
+    ShippingState: '',
+    ShippingCountry: '',
+    ShippingPin: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -25,7 +35,7 @@ function QuoteModal({ quote, contacts, companies, onSave, onClose }) {
   const statuses = ['Draft', 'Sent', 'Under Review', 'Accepted', 'Rejected', 'Expired'];
 
   useEffect(() => {
-    if (quote) {
+if (quote) {
       setFormData({
         QuoteNumber: quote.QuoteNumber || '',
         Title: quote.Title || '',
@@ -35,7 +45,17 @@ function QuoteModal({ quote, contacts, companies, onSave, onClose }) {
         Status: quote.Status || 'Draft',
         ValidUntil: quote.ValidUntil ? format(new Date(quote.ValidUntil), 'yyyy-MM-dd') : '',
         Description: quote.Description || '',
-        Terms: quote.Terms || ''
+        Terms: quote.Terms || '',
+        BillingStreet: quote.BillingStreet || '',
+        BillingCity: quote.BillingCity || '',
+        BillingState: quote.BillingState || '',
+        BillingCountry: quote.BillingCountry || '',
+        BillingPin: quote.BillingPin || '',
+        ShippingStreet: quote.ShippingStreet || '',
+        ShippingCity: quote.ShippingCity || '',
+        ShippingState: quote.ShippingState || '',
+        ShippingCountry: quote.ShippingCountry || '',
+        ShippingPin: quote.ShippingPin || ''
       });
     } else {
       // Generate quote number for new quotes
@@ -101,11 +121,43 @@ function QuoteModal({ quote, contacts, companies, onSave, onClose }) {
     } else if (new Date(formData.ValidUntil) <= new Date()) {
       newErrors.ValidUntil = 'Valid until date must be in the future';
     }
-
-    if (!formData.Description.trim()) {
+if (!formData.Description.trim()) {
       newErrors.Description = 'Description is required';
     }
 
+    // Billing Address Validation
+    if (!formData.BillingStreet.trim()) {
+      newErrors.BillingStreet = 'Billing street is required';
+    }
+    if (!formData.BillingCity.trim()) {
+      newErrors.BillingCity = 'Billing city is required';
+    }
+    if (!formData.BillingState.trim()) {
+      newErrors.BillingState = 'Billing state is required';
+    }
+    if (!formData.BillingCountry.trim()) {
+      newErrors.BillingCountry = 'Billing country is required';
+    }
+    if (!formData.BillingPin.trim()) {
+      newErrors.BillingPin = 'Billing PIN is required';
+    }
+
+    // Shipping Address Validation
+    if (!formData.ShippingStreet.trim()) {
+      newErrors.ShippingStreet = 'Shipping street is required';
+    }
+    if (!formData.ShippingCity.trim()) {
+      newErrors.ShippingCity = 'Shipping city is required';
+    }
+    if (!formData.ShippingState.trim()) {
+      newErrors.ShippingState = 'Shipping state is required';
+    }
+    if (!formData.ShippingCountry.trim()) {
+      newErrors.ShippingCountry = 'Shipping country is required';
+    }
+    if (!formData.ShippingPin.trim()) {
+      newErrors.ShippingPin = 'Shipping PIN is required';
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -329,7 +381,151 @@ const contactOptions = contacts.map(contact => ({
               placeholder="Payment terms, delivery conditions, etc..."
               rows={3}
               error={errors.Terms}
-            />
+/>
+          </div>
+
+          {/* Billing Address Section */}
+          <div className="border-t border-gray-200 pt-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Billing Address</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Street Address *
+                </label>
+                <Input
+                  name="BillingStreet"
+                  value={formData.BillingStreet}
+                  onChange={handleInputChange}
+                  placeholder="Enter street address"
+                  error={errors.BillingStreet}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  City *
+                </label>
+                <Input
+                  name="BillingCity"
+                  value={formData.BillingCity}
+                  onChange={handleInputChange}
+                  placeholder="Enter city"
+                  error={errors.BillingCity}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  State *
+                </label>
+                <Input
+                  name="BillingState"
+                  value={formData.BillingState}
+                  onChange={handleInputChange}
+                  placeholder="Enter state"
+                  error={errors.BillingState}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Country *
+                </label>
+                <Input
+                  name="BillingCountry"
+                  value={formData.BillingCountry}
+                  onChange={handleInputChange}
+                  placeholder="Enter country"
+                  error={errors.BillingCountry}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  PIN Code *
+                </label>
+                <Input
+                  name="BillingPin"
+                  value={formData.BillingPin}
+                  onChange={handleInputChange}
+                  placeholder="Enter PIN code"
+                  error={errors.BillingPin}
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Shipping Address Section */}
+          <div className="border-t border-gray-200 pt-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Shipping Address</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Street Address *
+                </label>
+                <Input
+                  name="ShippingStreet"
+                  value={formData.ShippingStreet}
+                  onChange={handleInputChange}
+                  placeholder="Enter street address"
+                  error={errors.ShippingStreet}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  City *
+                </label>
+                <Input
+                  name="ShippingCity"
+                  value={formData.ShippingCity}
+                  onChange={handleInputChange}
+                  placeholder="Enter city"
+                  error={errors.ShippingCity}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  State *
+                </label>
+                <Input
+                  name="ShippingState"
+                  value={formData.ShippingState}
+                  onChange={handleInputChange}
+                  placeholder="Enter state"
+                  error={errors.ShippingState}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Country *
+                </label>
+                <Input
+                  name="ShippingCountry"
+                  value={formData.ShippingCountry}
+                  onChange={handleInputChange}
+                  placeholder="Enter country"
+                  error={errors.ShippingCountry}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  PIN Code *
+                </label>
+                <Input
+                  name="ShippingPin"
+                  value={formData.ShippingPin}
+                  onChange={handleInputChange}
+                  placeholder="Enter PIN code"
+                  error={errors.ShippingPin}
+                  className="w-full"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Actions */}
